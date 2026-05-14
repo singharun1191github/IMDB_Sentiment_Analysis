@@ -1,4 +1,5 @@
 tf-keras
+tensorflow-cpu
 streamlit
 numpy
 h5py
