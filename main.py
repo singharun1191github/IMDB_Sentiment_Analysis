@@ -1,17 +1,28 @@
 import re
+import json
 import numpy as np
 import streamlit as st
+import urllib.request
 import tf_keras as keras
 from tf_keras.preprocessing import sequence
 from tf_keras.models import load_model
-from tensorflow.keras.datasets import imdb
 
-# Load IMDB word index
-word_index = imdb.get_word_index()
-reverse_word_index = {value: key for key, value in word_index.items()}
+# Download IMDB word index directly — no tensorflow needed
+@st.cache_resource
+def load_word_index():
+    url = "https://storage.googleapis.com/tensorflow/tf-keras-datasets/imdb_word_index.json"
+    with urllib.request.urlopen(url) as f:
+        word_index = json.loads(f.read().decode())
+    return word_index
+
+word_index = load_word_index()
 
 # Load saved model
-model = load_model('imdb_lstm_model.h5')
+@st.cache_resource
+def load_saved_model():
+    return load_model('imdb_lstm_model.h5')
+
+model = load_saved_model()
 
 # Preprocess user input
 def preprocess_review(text):
@@ -34,14 +45,15 @@ def predict_sentiment(review):
     return sentiment, float(score)
 
 # Streamlit app
-st.title("IMDB Movie Review Sentiment Analysis")
+st.title("🎬 IMDB Movie Review Sentiment Analysis")
 st.write("Enter a movie review to predict its sentiment.")
 
 user_review = st.text_area("Enter your movie review:")
 
 if st.button("Classify"):
     if user_review:
-        sentiment, score = predict_sentiment(user_review)
+        with st.spinner("Analysing..."):
+            sentiment, score = predict_sentiment(user_review)
         if sentiment == "Positive":
             st.success(f"Predicted Sentiment: {sentiment} 😊")
         else:
