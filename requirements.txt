@@ -1,3 +1,4 @@
-tensorflow==2.13.0
+tensorflow-cpu==2.15.0
 streamlit
 numpy
+h5py
