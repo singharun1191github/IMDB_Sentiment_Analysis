@@ -1,9 +1,10 @@
 import re
 import numpy as np
 import streamlit as st
-from keras.datasets import imdb
-from keras.preprocessing import sequence
-from keras.models import load_model
+import tf_keras as keras
+from tf_keras.preprocessing import sequence
+from tf_keras.models import load_model
+from tensorflow.keras.datasets import imdb
 
 # Load IMDB word index
 word_index = imdb.get_word_index()
