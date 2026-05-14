@@ -1,4 +1,5 @@
-tf-keras
+keras
+jax[cpu]
 streamlit
 numpy
 h5py
