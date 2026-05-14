@@ -1,4 +1,4 @@
-tensorflow-cpu==2.15.0
+tf-keras
 streamlit
 numpy
 h5py
